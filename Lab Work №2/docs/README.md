@@ -97,7 +97,7 @@
 
 Диаграмма компонентов отражает внутреннюю структуру Backend API и взаимодействие его компонентов между собой, а также с внешними системами, с которыми Backend API напрямую интегрируется.
 
-![Web App Components](backend-api-components.png)
+![Web App Components](backend-api-components1.png)
 
 ## Основные компоненты Backend API
 
@@ -141,7 +141,7 @@
 
 Диаграмма отражает структуру пользовательского интерфейса и показывает, как различные UI-компоненты взаимодействуют между собой и с Backend API.
 
-![Web App Components](web-app-components.png)
+![Web App Components](web-app-components1.png)
 
 ## Основные компоненты Web-приложения
 
