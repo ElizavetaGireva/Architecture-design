@@ -57,41 +57,41 @@ API возвращает корректные статусы:
 
 ### POST /api/v1/orders — создание заказа
 
-![POST /orders Body](/post_orders_body.png)
-![POST /orders Tests](/post_orders_tests.png)
+![POST /orders Body](post_orders_body.png)
+![POST /orders Tests](post_orders_tests.png)
 
 ### GET /api/v1/orders/:id — получение заказа по ID
 
-![GET /orders](/get_orders.png)
+![GET /orders](get_orders.png)
 
 ### PUT /api/v1/orders/:id — обновление статуса заказа
 
-![PUT /orders Body](/put_orders_body.png)
-![PUT /orders Tests](/put_orders_tests.png)
+![PUT /orders Body](put_orders_body.png)
+![PUT /orders Tests](put_orders_tests.png)
 
 ### DELETE /api/v1/orders/:id — удаление заказа
 
-![DELETE /orders Tests](/delete_orders_tests.png)
+![DELETE /orders Tests](delete_orders_tests.png)
 
 ### GET /api/v1/orders/:id — проверка, что заказ удалён (ожидаем 404)
 
-![GET deleted order Tests](/get_deleted_order_tests.png)
+![GET deleted order Tests](get_deleted_order_tests.png)
 
 ### POST /api/v1/orders — создание заказа (для сценария оплаты)
 
-![POST /orders Body](/post_orders_payment_body.png)
-![POST /orders Tests](/post_orders_payment_tests.png)
+![POST /orders Body](post_orders_payment_body.png)
+![POST /orders Tests](post_orders_payment_tests.png)
 
 ### POST /api/v1/payments — инициирование оплаты заказа
 
-![POST /payments Body](/post_payments_body.png)
-![POST /payments Tests](/post_payments_tests.png)
+![POST /payments Body](post_payments_body.png)
+![POST /payments Tests](post_payments_tests.png)
 
 ### GET /api/v1/orders/:id — проверка статуса заказа после инициации оплаты
 
-![GET /orders awaiting payment Tests](/get_order_awaiting_payment_tests.png)
+![GET /orders awaiting payment Tests](get_order_awaiting_payment_tests.png)
 
 ### POST /api/v1/payments/webhook — подтверждение оплаты
 
-![POST /payments/webhook Body](/post_payments_webhook_body.png)
-![POST /payments/webhook Tests](/post_payments_webhook_tests.png)
+![POST /payments/webhook Body](post_payments_webhook_body.png)
+![POST /payments/webhook Tests](post_payments_webhook_tests.png)
