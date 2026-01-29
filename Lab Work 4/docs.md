@@ -1,4 +1,4 @@
-<img width="1134" height="591" alt="2026-01-29_08-21-35" src="https://github.com/user-attachments/assets/b0a3b09c-b3d1-49f1-bb76-e18fa4b28cc7" /># Лабораторная работа №4  
+Лабораторная работа №4  
 ## Тема: Проектирование REST API  
 
 ## Цель работы  
