@@ -1,0 +1,141 @@
+{
+  "info": {
+    "name": "LabWork5 Integration Tests",
+    "_postman_id": "lab5-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+              "pm.test('Body ok=true', function () { pm.expect(pm.response.json().ok).to.eql(true); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Create order",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user-1\",\n  \"totalAmount\": 3500\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/orders"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('201 Created', function () { pm.response.to.have.status(201); });",
+              "const json = pm.response.json();",
+              "pm.test('Has id + status CREATED', function () {",
+              "  pm.expect(json).to.have.property('id');",
+              "  pm.expect(json.status).to.eql('CREATED');",
+              "});",
+              "pm.environment.set('orderId', json.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Get order by id",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/orders/{{orderId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Correct id', function () { pm.expect(json.id).to.eql(pm.environment.get('orderId')); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Start payment",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": \"{{orderId}}\"\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/payments"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Has paymentUrl', function () { pm.expect(json).to.have.property('paymentUrl'); });",
+              "pm.test('Has paymentId', function () { pm.expect(json).to.have.property('paymentId'); });",
+              "pm.environment.set('paymentId', json.paymentId);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Webhook SUCCESS",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paymentId\": \"{{paymentId}}\",\n  \"status\": \"SUCCESS\"\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/payments/webhook"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+              "pm.test('ok=true', function () { pm.expect(pm.response.json().ok).to.eql(true); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Check order is PAID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/orders/{{orderId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+              "pm.test('Status PAID', function () { pm.expect(pm.response.json().status).to.eql('PAID'); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
