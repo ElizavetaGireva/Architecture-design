@@ -1,9 +1,10 @@
 name: CI - Docker build + Integration tests
 
 on:
-  push:
-    branches: [ "LabWork5" ]
-  pull_request: [ "LabWork5" ]
+  push: 
+      branches: [LabWork5]
+  pull_request: 
+      branches: [LabWork5]
 
 jobs:
   build-and-test:
