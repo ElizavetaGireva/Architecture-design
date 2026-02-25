@@ -1,0 +1,52 @@
+name: CI - Docker build + Integration tests
+
+on:
+  push:
+    branches: [ "LabWork5" ]
+  pull_request: [ "LabWork5" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build images
+        run: docker compose build
+
+      - name: Start services
+        run: docker compose up -d
+
+      - name: Wait for backend health
+        run: |
+          for i in {1..40}; do
+            if curl -fsS http://localhost:3000/health > /dev/null; then
+              echo "Backend is healthy";
+              exit 0;
+            fi
+            echo "Waiting backend...";
+            sleep 3;
+          done
+          echo "Backend did not become healthy in time";
+          docker compose logs backend;
+          exit 1
+
+      - name: Run Postman (Newman) integration tests
+        run: |
+          npm i -g newman
+          newman run tests/postman/collection.json -e tests/postman/environment.json
+
+      - name: Compose logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Shutdown
+        if: always()
+        run: docker compose down -v
