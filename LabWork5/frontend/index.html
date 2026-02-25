@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>LabWork5 — Doll Shop</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    button { margin: 6px 0; padding: 8px 12px; }
+    pre { background: #f4f4f4; padding: 12px; }
+    input { padding: 6px; width: 260px; }
+  </style>
+</head>
+<body>
+  <h1>Онлайн-магазин кукольного творчества (демо)</h1>
+
+  <p><b>API Base:</b> <span id="apiBase"></span></p>
+
+  <h3>Создать заказ</h3>
+  <div>
+    <input id="userId" placeholder="userId (например user-1)" value="user-1"/>
+    <input id="amount" placeholder="totalAmount" value="3500"/>
+    <button onclick="createOrder()">POST /api/v1/orders</button>
+  </div>
+
+  <h3>Список заказов</h3>
+  <button onclick="getOrders()">GET /api/v1/orders</button>
+
+  <h3>Инициация оплаты</h3>
+  <button onclick="startPayment()">POST /api/v1/payments (по последнему orderId)</button>
+
+  <h3>Webhook SUCCESS</h3>
+  <button onclick="webhookSuccess()">POST /api/v1/payments/webhook</button>
+
+  <h3>Ответ</h3>
+  <pre id="out">—</pre>
+
+<script>
+  const API_BASE = "/api";
+  document.getElementById("apiBase").textContent = API_BASE;
+
+  let lastOrderId = null;
+  let lastPaymentId = null;
+
+  function print(obj) {
+    document.getElementById("out").textContent =
+      typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+  }
+
+  async function createOrder() {
+    const userId = document.getElementById("userId").value.trim();
+    const totalAmount = Number(document.getElementById("amount").value);
+
+    const r = await fetch(`${API_BASE}/api/v1/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, totalAmount })
+    });
+
+    const json = await r.json().catch(() => ({}));
+    if (r.ok) {
+      lastOrderId = json.id;
+    }
+    print({ status: r.status, body: json, lastOrderId });
+  }
+
+  async function getOrders() {
+    const r = await fetch(`${API_BASE}/api/v1/orders`);
+    const json = await r.json().catch(() => ({}));
+    print({ status: r.status, body: json });
+  }
+
+  async function startPayment() {
+    if (!lastOrderId) return print("Сначала создай заказ!");
+    const r = await fetch(`${API_BASE}/api/v1/payments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId: lastOrderId })
+    });
+    const json = await r.json().catch(() => ({}));
+    if (r.ok) lastPaymentId = json.paymentId;
+    print({ status: r.status, body: json, lastPaymentId });
+  }
+
+  async function webhookSuccess() {
+    if (!lastPaymentId) return print("Сначала инициируй оплату!");
+    const r = await fetch(`${API_BASE}/api/v1/payments/webhook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paymentId: lastPaymentId, status: "SUCCESS" })
+    });
+    const json = await r.json().catch(() => ({}));
+    print({ status: r.status, body: json });
+  }
+</script>
+</body>
+</html>
