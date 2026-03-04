@@ -62,7 +62,7 @@ console.log(db1 === db2);  // true, one instance
 
 **UML Диаграмма:**  
 
-![Factory Method](Factory Method.png)
+![Factory Method](Factory_Method.png)
 
 **Пример кода для проекта:**  
 Для примера реализации, допустим, мы реализуем "Фабричный метод" для создания разных типов платежных систем в нашем онлайн-магазине.
@@ -141,7 +141,7 @@ console.log(cardFactory.initiatePayment(200)); // Output: Processing payment of 
 
 **UML Диаграмма:**  
 
-![Abstract Factory](Abstract Factory.png)
+![Abstract Factory](Abstract_Factory.png)
 
 **Пример кода для проекта:**  
 Для примера давайте рассмотрим использование Абстрактной фабрики для создания разных тем оформления для нашего сайта. Например, темная и светлая темы могут включать разные компоненты (кнопки, фоны и т. д.).
@@ -679,7 +679,7 @@ console.log(context.request());  // Состояние B
 
 **UML Диаграмма:**  
 
-![Chain of Responsibility](Chain of Responsibility.png)
+![Chain of Responsibility](Chain_of_Responsibility.png)
 
 **Код:**
 ```typescript
