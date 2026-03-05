@@ -40,7 +40,7 @@ class Database {
 const db1 = new Database();
 const db2 = new Database();
 
-console.log(db1 === db2);  // true, one instance
+console.log(db1 === db2);
 ```
 
 **Что делает код:**  
@@ -222,8 +222,8 @@ function renderUI(factory: GUIFactory) {
 const lightFactory = new LightGUIFactory();
 const darkFactory = new DarkGUIFactory();
 
-renderUI(lightFactory); // Light theme button, Light theme text field
-renderUI(darkFactory);  // Dark theme button, Dark theme text field
+renderUI(lightFactory); 
+renderUI(darkFactory); 
 ```
 **Объяснение:**  
 • `GUIFactory` — абстракция для создания кнопок и текстовых полей.  
